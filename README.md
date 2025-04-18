@@ -4,36 +4,46 @@ API para gerenciamento de veículos utilizando arquitetura Hexagonal (Ports & Ad
 
 ## Arquitetura Hexagonal
 
-A arquitetura hexagonal, também conhecida como Ports & Adapters, visa separar as regras de negócio (domínio) das implementações externas (bancos de dados, frameworks, interfaces web, etc). Isso facilita testes, manutenção e evolução do sistema.
+A arquitetura hexagonal, também conhecida como Ports & Adapters, foi proposta por Alistair Cockburn em 2005.
+É uma arquitetura onde o núcleo da aplicação é composto de objetos de domínio, casos de uso que operam neles e portas de entrada e saída fornecem uma interface para o mundo exterior.
 
-- **Domínio:** Contém as entidades e regras de negócio puras, sem dependências externas.
-- **Ports (Portas):** Interfaces que definem contratos para entrada (input) e saída (output) de dados do domínio.
-- **Adapters (Adaptadores):** Implementações concretas das portas, conectando o domínio a frameworks, bancos de dados, APIs, etc.
+A arquitetura hexagonal é compartilhada em 3 partes:
 
-No projeto, a estrutura segue este padrão:
+- Centro do Hexágono
+- Lado esquerdo do hexágono
+- Lado direito do hexágono
+
+### O centro do Hexágono
+
+É onde está localizado o domínio do seu negócio, as entidades e regras inerentes ao seu software. É um ambiente que deve ser totalmente isolado em termos de não ser afetado por ocorrências externas.
+
+Esta camada, por exemplo, não tem conhecimento de como é feita a implementação de inserção e recuperação dos dados em um banco de dados, pois ela depende de uma abstração (interface).
+
+### Lado esquerdo do Hexágono
+
+É o lado do ator (usuário via interface, chamada de serviço) que conduz uma ação, pois este é o lado que realiza uma tarefa.
+
+### Lado direito do Hexágono
+
+É o lado secundário que é conduzido, seja para escrever dados, ler dados, modificar dados, e apagar dados.
+
+Nesta camada, temos as classes concretas, como por exemplo, a camada de repository responsável por acessar o banco de dados para inserção e recuperação dos dados.
+
+## Estrutura dos Diretórios
 
 ```
 src/
   vehicle/
-    adapters/   # Adaptadores de entrada (controllers, dtos) e saída (repositórios, gateways)
-    domain/     # Entidades e lógica de negócio
-    ports/      # Interfaces (contratos) para comunicação entre domínio e adaptadores
+    adapters/   
+    domain/     
+    ports/      
     vehicle.module.ts
-  main.ts       # Bootstrap da aplicação
-  app.module.ts # Módulo principal
+  main.ts       
+  app.module.ts 
+test/
+  vehicle/
+    unit/
 ```
-
-## Estrutura dos Diretórios
-
-- **src/vehicle/adapters/input/controllers/**: Controllers responsáveis por receber requisições HTTP e encaminhar para o domínio.
-- **src/vehicle/adapters/input/dtos/**: Objetos de transferência de dados (DTOs) usados nas entradas das APIs.
-- **src/vehicle/adapters/output/**: Implementações de saída, como repositórios e integrações externas.
-- **src/vehicle/domain/entities/**: Entidades do domínio, representando os objetos de negócio.
-- **src/vehicle/ports/input/**: Interfaces para casos de uso (serviços de aplicação).
-- **src/vehicle/ports/output/**: Interfaces para persistência e integrações externas.
-- **src/vehicle/vehicle.module.ts**: Módulo do domínio de veículos.
-- **src/main.ts**: Inicialização da aplicação e configuração do Swagger.
-- **test/**: Testes unitários e de integração.
 
 ## Como rodar o projeto
 
