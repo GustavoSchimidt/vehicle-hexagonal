@@ -83,11 +83,5 @@ Após iniciar a aplicação, acesse `http://localhost:3000/api` para visualizar 
 ```bash
 yarn test
 ```
-
-## Scripts disponíveis
-
-- `yarn start` - Inicia a aplicação
-- `yarn start:dev` - Inicia em modo desenvolvimento com hot reload
-- `yarn build` - Compila o projeto
-- `yarn test` - Executa os testes
-- `yarn lint` - Executa o linter
+## Projeto Frontend
+O frontend do projeto está disponível no repositório https://github.com/GustavoSchimidt/frontend-vehicle
