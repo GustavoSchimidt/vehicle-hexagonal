@@ -11,7 +11,7 @@ export class UpdateVehicleService implements IUpdateVehicleService {
     if (!existingVehicle) {
       throw new NotFoundException('Vehicle not found');
     }
-    this.validateVehicle(vehicle);
+    this.validateVehicle(id, vehicle);
 
     Object.assign(existingVehicle, {
       placa: vehicle.placa ?? existingVehicle.placa,
@@ -25,7 +25,7 @@ export class UpdateVehicleService implements IUpdateVehicleService {
     return this.vehicleRepository.update(id, existingVehicle);
   }
 
-  validateVehicle(vehicleDto: UpdateVehicleDto): void {
+  validateVehicle(id: string, vehicleDto: UpdateVehicleDto): void {
     const { placa, chassi, renavam } = vehicleDto;
 
     if (!placa) return;
@@ -36,7 +36,11 @@ export class UpdateVehicleService implements IUpdateVehicleService {
     const chassiExists = this.vehicleRepository.findByChassi(chassi);
     const renavamExists = this.vehicleRepository.findByRenavam(renavam);
 
-    if (placaExists || chassiExists || renavamExists) {
+    if (
+      (placaExists && placaExists.id !== id) ||
+      (chassiExists && chassiExists.id !== id) ||
+      (renavamExists && renavamExists.id !== id)
+    ) {
       throw new BadRequestException('placa, chassi or renavam already exists');
     }
   }
