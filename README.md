@@ -58,6 +58,10 @@ yarn install
 ```
 
 ### Executando a aplicação
+Criar o arquivo `.env` com base no arquivo `.env.example`
+```bash
+cp .env.example .env
+```
 
 ```bash
 # Modo desenvolvimento
